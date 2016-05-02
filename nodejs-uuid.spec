@@ -10,14 +10,16 @@
 Summary:       Rigorous implementation of RFC4122 (v1 and v4) UUIDs
 Name:          %{?scl_prefix}nodejs-%{npm_name}
 Version:       2.0.1
-Release:       7%{?dist}
+Release:       8%{?dist}
 License:       MIT
 URL:           https://github.com/shtylman/node-uuid
 Source0:       http://registry.npmjs.org/%{npm_name}/-/%{npm_name}-%{version}.tgz
-BuildRequires: %{?scl_prefix}runtime
-ExclusiveArch: %{nodejs_arches} noarch
-BuildArch:     noarch
-Provides:      %{?scl_prefix}nodejs-%{npm_name} = %{version}
+#BuildRequires: %{?scl_prefix}runtime
+BuildRequires:  %{?scl_prefix}nodejs-devel
+
+ExclusiveArch:  %{nodejs_arches} noarch
+BuildArch:      noarch
+#Provides:       %{?scl_prefix}nodejs-%{npm_name} = %{version}
 
 %if 0%{?enable_tests}
 BuildRequires:  %{?scl_prefix}npm(mocha)
@@ -36,7 +38,7 @@ Features:
 
 %prep
 %setup -q -n package
-%nodejs_fixdep uuid-js '0.7.5'
+#%nodejs_fixdep uuid-js '0.7.5'
 
 %build
 
@@ -60,6 +62,9 @@ mocha test/test.js
 %{nodejs_sitelib}/%{npm_name}
 
 %changelog
+* Mon May 02 2016 Zuzana Svetlikova <zsvetlik@redhat.com> - 2.0.1-8
+- Remove old dependency
+
 * Tue Feb 16 2016 Zuzana Svetlikova <zsvetlik@redhat.com> - 2.0.1-7
 - Use macro in -runtime dependency
 
