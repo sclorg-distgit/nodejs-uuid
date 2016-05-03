@@ -1,67 +1,63 @@
-%{?scl:%scl_package nodejs-%{npm_name}}
+%{?scl:%scl_package nodejs-uuid}
 %{!?scl:%global pkg_name %{name}}
-%{?nodejs_find_provides_and_requires}
 
 %global npm_name uuid
+%{?nodejs_find_provides_and_requires}
 
-# Disable until dependencies are met
 %global enable_tests 0
 
-Summary:       Rigorous implementation of RFC4122 (v1 and v4) UUIDs
-Name:          %{?scl_prefix}nodejs-%{npm_name}
-Version:       2.0.1
-Release:       8%{?dist}
-License:       MIT
-URL:           https://github.com/shtylman/node-uuid
-Source0:       http://registry.npmjs.org/%{npm_name}/-/%{npm_name}-%{version}.tgz
-#BuildRequires: %{?scl_prefix}runtime
-BuildRequires:  %{?scl_prefix}nodejs-devel
+Name:		%{?scl_prefix}nodejs-%{npm_name}
+Version:	2.0.1
+Release:	10%{?dist}
+Summary:	Rigorous implementation of RFC4122 (v1 and v4) UUIDs.
+Url:		https://github.com/shtylman/node-uuid
+Source0:	https://registry.npmjs.org/%{npm_name}/-/%{npm_name}-%{version}.tgz
+License:	MIT
 
-ExclusiveArch:  %{nodejs_arches} noarch
-BuildArch:      noarch
-#Provides:       %{?scl_prefix}nodejs-%{npm_name} = %{version}
+BuildArch:	noarch
+ExclusiveArch:	%{nodejs_arches} noarch
+
+BuildRequires:	%{?scl_prefix}nodejs-devel
 
 %if 0%{?enable_tests}
-BuildRequires:  %{?scl_prefix}npm(mocha)
-BuildRequires:  %{?scl_prefix}npm(coveralls)
+BuildRequires:	npm(mocha)
 %endif
 
 %description
-Simple, fast generation of RFC4122 UUIDS.
-
-Features:
- - Generate RFC4122 version 1 or version 4 UUIDs
- - Runs in node.js and all browsers.
- - Cryptographically strong random # generation on supporting platforms
- - 1185 bytes minified and gzip'ed
- - Annotated source code
+Rigorous implementation of RFC4122 (v1 and v4) UUIDs.
 
 %prep
 %setup -q -n package
-#%nodejs_fixdep uuid-js '0.7.5'
 
 %build
+#nothing to do
 
 %install
 mkdir -p %{buildroot}%{nodejs_sitelib}/%{npm_name}
-cp -pr *.js package.json %{buildroot}%{nodejs_sitelib}/%{npm_name}
+
+cp -pr package.json *.js \
+	%{buildroot}%{nodejs_sitelib}/%{npm_name}
 
 %nodejs_symlink_deps
 
 %if 0%{?enable_tests}
-
 %check
-%nodejs_symlink_deps --check
+%{nodejs_symlink_deps} --check
 mocha test/test.js
 %endif
 
 %files
-%{!?_licensedir:%global license %doc}
+%{nodejs_sitelib}/uuid
 %doc benchmark README.md
 %license LICENSE.md
-%{nodejs_sitelib}/%{npm_name}
 
 %changelog
+* Tue May 03 2016 Zuzana Svetlikova <zsvetlik@redhat.com> - 2.0.1-10
+- New spec
+
+* Tue May 03 2016 Zuzana Svetlikova <zsvetlik@redhat.com> - 2.0.1-9
+- Add dep
+
 * Mon May 02 2016 Zuzana Svetlikova <zsvetlik@redhat.com> - 2.0.1-8
 - Remove old dependency
 
