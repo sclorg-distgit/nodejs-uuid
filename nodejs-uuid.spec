@@ -10,7 +10,7 @@
 Summary:       Rigorous implementation of RFC4122 (v1 and v4) UUIDs
 Name:          %{?scl_prefix}nodejs-%{npm_name}
 Version:       2.0.1
-Release:       5.sc1%{?dist}
+Release:       5.sc2%{?dist}
 License:       MIT
 URL:           https://github.com/shtylman/node-uuid
 Source0:       http://registry.npmjs.org/%{npm_name}/-/%{npm_name}-%{version}.tgz
